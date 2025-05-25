@@ -22,7 +22,6 @@ The extension integrates with VS Code as an extension, using the VS Code API and
 - Add, edit, and delete tasks
 - View tasks in a list or board format
 - Persist tasks using VS Code workspace storage
-- Optional: Synchronize tasks with an MCP server
 
 ### 2.3 User Classes and Characteristics
 - **End User**: Uses the extension to manage tasks
@@ -58,7 +57,6 @@ The extension integrates with VS Code as an extension, using the VS Code API and
 
 ### 3.3 System Interfaces
 - VS Code API
-- Optional: MCP server REST API
 
 ## 4. Appendices
 - A. Copilot Coding Standards (see .github/instructions/copilot-instructions.md)
