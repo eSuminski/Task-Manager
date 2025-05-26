@@ -1,0 +1,24 @@
+.task-board {
+  display: flex;
+  width: 100%;
+  min-height: 18.75em; /* 300px -> 18.75em (assuming 16px base) */
+  margin-top: 1.5em;   /* 24px -> 1.5em */
+}
+
+.task-column {
+  flex: 1;
+  padding: 0 1em;      /* 16px -> 1em */
+  background: var(--vscode-editorWidget-background, #1e1e1e);
+  /* Optional: add box-shadow or border-radius for style */
+}
+
+.task-column:not(:first-child) {
+  border-left: 2px solid var(--vscode-editorWidget-border, #cccccc);
+}
+
+.task-column h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+  text-align: center;
+  color: var(--vscode-editorWidget-foreground, #d4d4d4);
+}
