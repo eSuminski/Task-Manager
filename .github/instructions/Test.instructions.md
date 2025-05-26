@@ -8,7 +8,6 @@ applyTo: "src/test/**/*"
 - Isolate tests and avoid side effects.
 - Use descriptive test names and maintain clear structure.
 - Ensure each command and API endpoint has corresponding unit and integration tests.
-- Use Playwright for automated Webview UI interaction tests if testing Webview components.
 - Never allow unmocked file system or network access in tests.
 - Simulate MCP requests to validate API reliability and error handling.
 - Check response consistency, status codes, and error messages in API tests.

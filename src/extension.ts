@@ -15,11 +15,46 @@ export function activate(context: vscode.ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	const disposable = vscode.commands.registerCommand('task-manager.helloWorld', () => {
 		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Task Manager!');
+
+		const panel = vscode.window.createWebviewPanel(
+			'taskManagerWelcome',
+			'Task Manager',
+			vscode.ViewColumn.One,
+			{
+				enableScripts: true,
+				retainContextWhenHidden: true,
+				// Add strict CSP and other options as needed
+			}
+		);
+
+		panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
 	});
 
 	context.subscriptions.push(disposable);
+}
+
+function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
+	const scriptUri = webview.asWebviewUri(
+		extensionUri.with({
+			path: extensionUri.path + '/out/webview/index.js'
+		})
+	);
+
+	return `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-eval' 'unsafe-inline' ${webview.cspSource};">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Task Manager</title>
+		</head>
+		<body>
+			<div id="root"></div>
+			<script src="${scriptUri}"></script>
+		</body>
+		</html>
+	`;
 }
 
 // This method is called when your extension is deactivated

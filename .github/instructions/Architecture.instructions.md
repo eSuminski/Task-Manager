@@ -6,7 +6,7 @@ applyTo: "**"
 
 ## SRS Requirements Overview
 - Core Features: Add, edit, delete, and display tasks within VS Code.
-- Optional: Synchronize tasks with an MCP server.
+- Optional: Synchronize tasks with an MCP server (Will be worked on at a later time).
 - UI: Kanban board or list view, modular and testable state management.
 - Data Persistence: Use VS Code workspace storage APIs; persist state across sessions.
 - Security: Strict Content Security Policy for Webviews; validate and sanitize all user input.
