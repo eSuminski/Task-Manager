@@ -17,7 +17,24 @@
         "command": "task-manager.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "taskManagerContainer",
+          "title": "Task Manager",
+          "icon": "media/Task-Manager.svg"
+        }
+      ]
+    },
+    "views": {
+      "taskManagerContainer": [
+        {
+          "id": "taskManagerView",
+          "name": "Task Board"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

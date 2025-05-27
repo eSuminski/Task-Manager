@@ -31,6 +31,29 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	// Register the sidebar WebviewView
+	const provider = new TaskManagerViewProvider(context);
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(TaskManagerViewProvider.viewType, provider)
+	);
+}
+
+class TaskManagerViewProvider implements vscode.WebviewViewProvider {
+	public static readonly viewType = 'taskManagerView';
+	constructor(private readonly context: vscode.ExtensionContext) {}
+
+	resolveWebviewView(
+		webviewView: vscode.WebviewView,
+		context: vscode.WebviewViewResolveContext,
+		_token: vscode.CancellationToken
+	) {
+		webviewView.webview.options = {
+			enableScripts: true,
+			localResourceRoots: [this.context.extensionUri]
+		};
+		webviewView.webview.html = getWebviewContent(webviewView.webview, this.context.extensionUri);
+	}
 }
 
 function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
