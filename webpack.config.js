@@ -2,10 +2,13 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/webview/index.tsx',
+  entry: {
+    main: './src/webview/index.tsx',
+    navRootView: './src/webview/View/navRootViewEntry.tsx',
+  },
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'out/webview'),
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'media'),
     clean: true,
   },
   resolve: {

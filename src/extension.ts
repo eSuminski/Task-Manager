@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { NavRootViewProvider } from './backend/NavRootViewProvider';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -32,28 +33,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(disposable);
 
-	// Register the sidebar WebviewView
-	const provider = new TaskManagerViewProvider(context);
+	// Register the Nav Root sidebar WebviewView
+	const navRootProvider = new NavRootViewProvider(context);
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(TaskManagerViewProvider.viewType, provider)
+		vscode.window.registerWebviewViewProvider(NavRootViewProvider.viewType, navRootProvider)
 	);
-}
-
-class TaskManagerViewProvider implements vscode.WebviewViewProvider {
-	public static readonly viewType = 'taskManagerView';
-	constructor(private readonly context: vscode.ExtensionContext) {}
-
-	resolveWebviewView(
-		webviewView: vscode.WebviewView,
-		context: vscode.WebviewViewResolveContext,
-		_token: vscode.CancellationToken
-	) {
-		webviewView.webview.options = {
-			enableScripts: true,
-			localResourceRoots: [this.context.extensionUri]
-		};
-		webviewView.webview.html = getWebviewContent(webviewView.webview, this.context.extensionUri);
-	}
 }
 
 function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {

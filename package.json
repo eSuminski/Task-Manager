@@ -16,6 +16,11 @@
       {
         "command": "task-manager.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "task-manager.createTaskBoard",
+        "title": "Create Task Board",
+        "icon": "$(add)"
       }
     ],
     "viewsContainers": {
@@ -23,15 +28,25 @@
         {
           "id": "taskManagerContainer",
           "title": "Task Manager",
-          "icon": "media/Task-Manager.svg"
+          "icon": "Task-Manager.svg"
         }
       ]
     },
     "views": {
       "taskManagerContainer": [
         {
-          "id": "taskManagerView",
-          "name": "Task Board"
+          "id": "taskManagerNavRoot",
+          "name": "Task Manager"
+          
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "task-manager.createTaskBoard",
+          "when": "view == taskManagerNavRoot",
+          "group": "navigation"
         }
       ]
     }
