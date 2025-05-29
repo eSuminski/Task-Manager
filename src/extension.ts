@@ -1,22 +1,21 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { NavRootViewProvider } from './backend/NavRootViewProvider';
+import { TaskBoardTreeProvider } from './backend/TaskBoardTreeProvider';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+/**
+ * Called when your extension is activated. This happens the very first time the command is executed.
+ * @param context The extension context provided by VS Code.
+ */
 export function activate(context: vscode.ExtensionContext) {
-
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "task-manager" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
+	/**
+	 * Registers the helloWorld command and shows the welcome webview panel.
+	 */
 	const disposable = vscode.commands.registerCommand('task-manager.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
 		const panel = vscode.window.createWebviewPanel(
 			'taskManagerWelcome',
 			'Task Manager',
@@ -27,19 +26,62 @@ export function activate(context: vscode.ExtensionContext) {
 				// Add strict CSP and other options as needed
 			}
 		);
-
 		panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
 	});
 
 	context.subscriptions.push(disposable);
 
-	// Register the Nav Root sidebar WebviewView
-	const navRootProvider = new NavRootViewProvider(context);
+	/**
+	 * Registers the TaskBoardTreeProvider for the tree view.
+	 */
+	const taskBoardProvider = new TaskBoardTreeProvider(context);
+	vscode.window.registerTreeDataProvider('taskManagerNavRoot', taskBoardProvider);
+
+	/**
+	 * Registers the createTaskBoard and deleteTaskBoard commands for creating and deleting boards.
+	 */
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(NavRootViewProvider.viewType, navRootProvider)
+		vscode.commands.registerCommand('task-manager.createTaskBoard', async () => {
+			const name = await vscode.window.showInputBox({ prompt: 'Enter board name' });
+			if (name) {
+				const boards = taskBoardProvider.boards;
+				boards.push({
+					label: name,
+					columns: [
+						{ label: 'Backlog', tasks: [] },
+						{ label: 'In Progress', tasks: [] },
+						{ label: 'Done', tasks: [] }
+					]
+				});
+				taskBoardProvider.boards = boards;
+				taskBoardProvider.refresh();
+			}
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('task-manager.deleteTaskBoard', async (boardLabel: string) => {
+			const confirm = await vscode.window.showWarningMessage(
+				`Are you sure you want to delete the board "${boardLabel}"? This action cannot be undone.`,
+				{ modal: true },
+				'Delete'
+			);
+			if (confirm === 'Delete') {
+				const boards = taskBoardProvider.boards.filter((b: any) => b.label !== boardLabel);
+				taskBoardProvider.boards = boards;
+				taskBoardProvider.refresh();
+				vscode.window.showInformationMessage(`Board "${boardLabel}" deleted.`);
+			}
+		})
 	);
 }
 
+/**
+ * Returns the HTML content for the webview panel.
+ * @param webview The webview instance.
+ * @param extensionUri The URI of the extension root.
+ * @returns The HTML string for the webview.
+ */
 function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
 	const scriptUri = webview.asWebviewUri(
 		extensionUri.with({
@@ -64,5 +106,7 @@ function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): s
 	`;
 }
 
-// This method is called when your extension is deactivated
+/**
+ * Called when your extension is deactivated.
+ */
 export function deactivate() {}

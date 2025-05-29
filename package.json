@@ -27,7 +27,7 @@
       "activitybar": [
         {
           "id": "taskManagerContainer",
-          "title": "Task Manager Container",
+          "title": "Task Manager",
           "icon": "Task-Manager.svg"
         }
       ]
