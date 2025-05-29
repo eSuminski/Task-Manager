@@ -90,13 +90,8 @@ export class TaskBoardTreeProvider implements vscode.TreeDataProvider<TaskTreeIt
         board => new TaskTreeItem(
           board.label,
           vscode.TreeItemCollapsibleState.Collapsed,
-          'board',
-          new vscode.ThemeIcon('trash'),
-          {
-            command: 'task-manager.deleteTaskBoard',
-            title: 'Delete Board',
-            arguments: [board.label]
-          }
+          'board'
+          // Removed iconPath and command for trash icon; context menu will handle delete
         )
       );
     }

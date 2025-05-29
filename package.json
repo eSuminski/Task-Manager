@@ -21,6 +21,11 @@
         "command": "task-manager.createTaskBoard",
         "title": "Create Task Board",
         "icon": "$(add)"
+      },
+      {
+        "command": "task-manager.deleteTaskBoard",
+        "title": "Delete Board",
+        "icon": "$(trash)"
       }
     ],
     "viewsContainers": {
@@ -47,6 +52,13 @@
           "command": "task-manager.createTaskBoard",
           "when": "view == taskManagerNavRoot",
           "group": "navigation"
+        }
+      ],
+    "view/item/context": [
+        {
+          "command": "task-manager.deleteTaskBoard",
+          "when": "view == taskManagerNavRoot && viewItem == board",
+          "group": "inline"
         }
       ]
     }
